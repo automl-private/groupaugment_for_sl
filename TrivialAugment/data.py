@@ -14,6 +14,7 @@ from sklearn.model_selection import StratifiedShuffleSplit
 from theconf import Config as C
 
 from TrivialAugment.augmentations import *
+from groupaugment import groupaugment
 from TrivialAugment.common import get_logger, copy_and_replace_transform, stratified_split, denormalize
 from TrivialAugment.imagenet import ImageNet
 
@@ -159,6 +160,9 @@ def get_dataloaders(dataset, batch, dataroot, split=0.15, split_idx=0, distribut
         assert not C.get()['randaug'].get('corrected_sample_space') and not C.get()['randaug'].get('google_augmentations')
         transform_train.transforms.insert(0, get_randaugment(n=C.get()['randaug']['N'], m=C.get()['randaug']['M'],
                                                              weights=C.get()['randaug'].get('weights',None), bs=C.get()['batch']))
+    elif C.get()['aug'] == 'groupaugment':
+        groupaugment_transform = groupaugment(None, 'CIFAR10', False)
+        transform_train = transforms.Compose([lambda image: groupaugment_transform(image=np.array(image))['image']])
     elif C.get()['aug'] in ['default', 'inception', 'inception320']:
         pass
     else:

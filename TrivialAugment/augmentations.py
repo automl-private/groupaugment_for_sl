@@ -70,7 +70,7 @@ def get_randaugment(n,m,weights,bs):
     assert m < 100 and n < 100
     if m == 0:
         if weights is not None:
-            return aug_lib.UniAugmentWeighted(n, probs=weights)
+            return aug_lib.UniAugmentWeighted(probs=weights)
         elif n == 0:
             return aug_lib.UniAugment()
         else:

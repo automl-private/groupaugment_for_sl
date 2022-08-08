@@ -664,8 +664,7 @@ class UniAugment:
 
 
 class UniAugmentWeighted:
-    def __init__(self, n, probs):
-        self.n = n
+    def __init__(self, probs):
         self.probs = probs  # [prob of zero augs, prob of one aug, ..]
 
     def __call__(self, img):
